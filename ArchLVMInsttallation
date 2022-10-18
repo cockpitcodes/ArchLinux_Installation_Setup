@@ -7,7 +7,69 @@ RAHUL SARKAR
 
 Considerations:
 
-1.
+1. Partitions -  Separate And Independent Partitions /, /home, /var, /boot, /efi and swap.
+2. 
 
 #########################################################################################################################
 
+# Connect Wifi with 'iwctl'
+
+-> iwctl
+-> device list
+-> station [interface name - "wlan0"] scan
+-> station [interface name - "wlan0"] get-networks
+-> station [interface name - "wlan0"] connect SSID
+-> exit
+
+### Disk Preparation Using 'cgdisk' utility ###
+
+-> Delete Existing Partition Scheme
+-> cfdisk /dev/sda or nvme0n1
+
+EFI Partition (fat32) Code ef00
+Boot Partition Code (Linux Filesystem) 8300
+LVM Partition Code (LVM) 8e00
+
+-> Create Partitions As Per The cgdisk instructions
+
+[ FORMAT ALL PARTITIONS ]
+
+-> mkfs.fat -F32 /dev/(sda1 or nvme0n1p1)
+-> mkfs.ext4 /dev/(sda2 or nvme0n1p2)
+-> mkfs.ext4 /dev/(sda3 or nvme0n1p3)
+-> mkswap /dev/'archvolgrp0'/lv_swap
+-> mkfs.ext4 /dev/'archvolgrp0'/lv_var
+-> mkfs.ext4 /dev/'archvolgrp0'/lv_root
+-> mkfs.ext4 /dev/'archvolgrp0'/lv_home
+
+[ CREATE PHYSICAL VOLUME, VOLUMEGROUP AND LOGICAL VOLUME ]
+
+-> pvcreate --dataalignment 1m /dev/(sda3 or nvme0n1p3)
+-> vgcreate 'archvolgrp0' /dev/(sda3 or nvme0n1p3)
+
+-> lvcreate -L 10G 'archvolgrp0' -n lv_swap // For Swap Partition
+-> lvcreate -L 16G 'archvolgrp0' -n lv_var  // For Var Partition
+-> lvcreate -L 70G 'archvolgrp0' -n lv_root // For Root Partition
+-> lvcreate -l 100%FREE 'archvolgrp0' -n lv_home  // For Home Partition
+
+[ ACTIVATE/VERIFY VOLUMES ]
+
+-> modprobe dm_mod
+-> vgscan
+-> vgchange -ay
+
+[ CREATE DIRECTORIES FOR MOUNTING]
+
+mkdir /mnt/boot
+mkdir /mnt/boot/efi
+mkdir /mnt/var
+mkdir /mnt/home
+mkdir /mnt/etc
+
+mount /dev/'archvolgrp0'/lv_root /mnt // Mounting Root Partition
+mount /dev/'archvolgrp0'/lv_var   /mnt/var  //Mounting Var Partition
+mount /dev/'archvolgrp0'/lv_home  /mnt/home //Mounting Home Partition
+swapon /dev/'archvolgrp0'/lv_swap
+
+mount /dev/(sda2 or nvme0n1p2) /mnt/boot
+mount /dev/(sda1 or nvme0n1p1 /mni/boot/efi
