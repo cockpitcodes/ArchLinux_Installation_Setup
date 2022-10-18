@@ -1,0 +1,42 @@
+[ USING IWD - iwctl ]
+
+# To Get Into iwctl interactive interface
+
+-> iwctl
+
+# To Check Device /Interface Name
+
+-> device list // Should give interface like 'wlan0'
+
+# To Scan The Stations
+
+-> station 'device' scan  // device = wlan0
+
+# To Get The List Of Stations Available
+
+-> station 'device' get-networks // device = wlan0
+
+# To Connect With The Station
+
+-> station 'device' connect [SSID] // device = wlan0
+
+
+
+
+[ USING NETWORKMANAGER - nmcli]
+
+# To Check Device /Interface Name
+
+-> nmcli d
+
+# To Turn The Wifi ON
+
+-> nmcli r wifi on
+
+# To Get The Stations Available
+
+-> nmcli d wifi list
+
+# To Establish The Connection With The Wifi
+
+-> nmcli d wifi connect [SSID] password 'password'
