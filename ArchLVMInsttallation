@@ -95,7 +95,7 @@ pacstrap -i /mnt base base-devel
 
 # [INSTALLING CORE OS PACKAGES - NON-GUI Components]
 
--> pacman -S linux-lts linux-lts-headers linux-firmware intel-ucode lvm2 nano bash-completion networkmanager wpa_supplicant wireless_tools dialog
+-> pacman -S linux-lts linux-lts-headers linux-firmware intel-ucode ufw apparmor lvm2 nano bash-completion networkmanager wpa_supplicant wireless_tools dialog
 
 
 [ ENABLE 'NetworkManager']
