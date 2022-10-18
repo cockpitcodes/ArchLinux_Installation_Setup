@@ -154,6 +154,12 @@ pacstrap -i /mnt base base-devel
 -> Uncomment Line: wheel ALL=(ALL:ALL) ALL  //Below The Line root ALL=(ALL:ALL) ALL
 
 
+[ ARCH MULTILIB SUPPORT ]
+
+-> Open file '/etc/pacman.conf
+-> Uncomment the line below ' #[multilib]' STRICTLY DONT Uncomment The line #[multilib-testing]
+
+
 [MAKE SYSTEM BOOTABLE USING GRUB CONFIGURATIONS]
 
 -> pacman -S grub efibootmgr dosfstools os-prober mtools
