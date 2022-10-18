@@ -1,0 +1,8 @@
+-> Login System
+
+
+[ INSTALL GNOME PACKAHES ]
+
+-> pacman -S gnome gnome-tweaks
+-> systemctl enable gdm
+-> reboot
