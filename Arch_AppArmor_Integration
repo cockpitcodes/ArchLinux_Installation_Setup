@@ -8,7 +8,7 @@ pacman -S apparmor
 cat /sys/kernel/security/lsm
 
 
-[ Configure AppArmor And Linux Security Module Integration]
+[ Configure AppArmor And Linux Security Module Integration ]
 
 -> systemctl enable apparmor
 -> systemctl enable auditd
