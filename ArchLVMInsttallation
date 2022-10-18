@@ -60,16 +60,84 @@ LVM Partition Code (LVM) 8e00
 
 [ CREATE DIRECTORIES FOR MOUNTING]
 
-mkdir /mnt/boot
-mkdir /mnt/boot/efi
-mkdir /mnt/var
-mkdir /mnt/home
-mkdir /mnt/etc
+-> mkdir /mnt/boot
+-> mkdir /mnt/boot/efi
+-> mkdir /mnt/var
+-> mkdir /mnt/home
+-> mkdir /mnt/etc
 
-mount /dev/'archvolgrp0'/lv_root /mnt // Mounting Root Partition
-mount /dev/'archvolgrp0'/lv_var   /mnt/var  //Mounting Var Partition
-mount /dev/'archvolgrp0'/lv_home  /mnt/home //Mounting Home Partition
-swapon /dev/'archvolgrp0'/lv_swap
+-> mount /dev/'archvolgrp0'/lv_root /mnt // Mounting Root Partition
+-> mount /dev/'archvolgrp0'/lv_var   /mnt/var  //Mounting Var Partition
+-> mount /dev/'archvolgrp0'/lv_home  /mnt/home //Mounting Home Partition
+-> swapon /dev/'archvolgrp0'/lv_swap // Mounting Swap Partition
 
-mount /dev/(sda2 or nvme0n1p2) /mnt/boot
-mount /dev/(sda1 or nvme0n1p1 /mni/boot/efi
+-> mount /dev/(sda2 or nvme0n1p2) /mnt/boot
+-> mount /dev/(sda1 or nvme0n1p1 /mni/boot/efi
+
+-> Check 'lsblk' if all partitions are mounted
+
+[ GENERATE FSTAB FILE ]
+
+-> genfstab -U -p /mnt >> /mnt/etc/fstab
+-> Verify Fstab by 'cat /mnt/etc/fstab'
+
+
+# [INSTALLATION OF BASE PACKAGES]
+
+pacstrap -i /mnt base base-devel
+
+
+
+### ARCH CHROOT INTO SYSTEM ###
+
+-> arch-chroot /mnt
+
+# [INSTALLING CORE OS PACKAGES - NON-GUI Components]
+
+-> pacman -S linux-lts linux-lts-headers linux-firmware lvm2 nano bash-completion networkmanager wpa_supplicant wireless_tools dialog
+
+[ ENABLE 'NetworkManager']
+
+-> systemctl enable NetworkManager
+
+[CONFIGURE MKINITCPIO FOR LVM INCLUSION]
+
+-> Open file using text editor /etc/mkinitcpio.conf
+-> Add 'lvm2' on the HOOKS line between 'block' and 'filesystems'
+eg : HOOKS=(base udev autodetect modconf block lvm2 filesystems keyboard fsck )
+
+->mkinitcpio -p linux-lts
+
+
+[LOCALE CONFIGURATIONS]
+
+-> Open /etc/locale.gen using text editor
+-> Uncomment Line: en_US.UTF-8 UTF-8
+-> Uncomment Line: en_US ISO-8859-1
+
+-> locale-gen
+
+[USERS AND PASSWORD CONFIGURATIONS]
+
+-> passwd root  //Set Root User Password
+
+-> Create Non-Root User
+-> useradd -m -g users -G wheel 'username'
+
+-> Set Password For Newly Created Non-Root User
+-> passwd 'username'
+
+-> Give Non-Root User Sudo Privilages 
+-> Open /etc/sudoers using text editors
+-> Uncomment Line: wheel ALL=(ALL:ALL) ALL  //Below The Line root ALL=(ALL:ALL) ALL
+
+
+[MAKE SYSTEM BOOTABLE USING GRUB CONFIGURATIONS]
+
+-> pacman -S grub efibootmgr dosfstools os-prober mtools
+
+-> grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck
+
+-> cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
+
+-> grub-mkconfig -o /boot/grub/grub.cfg
