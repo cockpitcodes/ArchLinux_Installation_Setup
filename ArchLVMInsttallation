@@ -170,7 +170,7 @@ pacstrap -i /mnt base base-devel
 pacman -S xorg xorg-server mesa
 
 
-[ ENABLE SYSTEM CONFIGURATIONS ]
+[ ENABLE SYSTEM CONFIGURATIONS - OPTIONAL: ONLY IF APPARMOR AND UFW FIREWALL IS INSTALLED ]
 
 systemctl enable apparmor
 systemctl enable auditd
