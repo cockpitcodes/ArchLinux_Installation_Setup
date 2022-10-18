@@ -131,8 +131,11 @@ pacstrap -i /mnt base base-devel
 [ SET SYSTEM HOSTNAME HOSTS CONFIGURATIONS ]
 
 -> hostnamectlset-hostname 'host_name'
+
 -> Verify using command hostnamectl and check 'Static hostname:' in the Terminal OR  Check For Hostname using 'cat /etc/hostname'
+
 -> Open file /etc/hosts using Text Editor And Append Lines
+
 -> 127.0.0.1  localhost
    127.0.1.1  'host_name'
 
@@ -166,6 +169,12 @@ pacstrap -i /mnt base base-devel
 
 pacman -S xorg xorg-server mesa
 
+
+[ ENABLE SYSTEM CONFIGURATIONS ]
+
+systemctl enable apparmor
+systemctl enable auditd
+systemctl enable ufw
 
 
 ### UNMOUNT CHROOT SYSTEM AND REBOOT
