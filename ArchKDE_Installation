@@ -1,0 +1,7 @@
+-> Login System
+
+[ KDE Installation Packages ]
+
+-> pacman -S plasma-meta kde-applications 
+-> systemctl enable sddm
+-> reboot
