@@ -200,6 +200,7 @@ gcc
 python
 python-pip
 python-mysqlclient	// for MySQL & MariaDB
+python-mysql-connector // For MySQL & MariadB
 ptthon-psycopg2	//for PostgreSQL
 kotlin
 dart
