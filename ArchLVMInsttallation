@@ -126,6 +126,7 @@ pacstrap -i /mnt base base-devel
 -> Check Available Timezones
 -> timedatectl list-timezones (eg - Asia/Kolkata)
 -> timedatectl set-timezone Asia/Kolkata
+ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 -> systemctl enable systemd-timesyncd
 
 [ SET SYSTEM HOSTNAME HOSTS CONFIGURATIONS ]
