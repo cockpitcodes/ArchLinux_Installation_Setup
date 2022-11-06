@@ -36,7 +36,6 @@ LVM Partition Code (LVM) 8e00
 
 -> mkfs.fat -F32 /dev/(sda1 or nvme0n1p1)
 -> mkfs.ext4 /dev/(sda2 or nvme0n1p2)
--> mkfs.ext4 /dev/(sda3 or nvme0n1p3)
 -> mkswap /dev/'archvolgrp0'/lv_swap
 -> mkfs.ext4 /dev/'archvolgrp0'/lv_var
 -> mkfs.ext4 /dev/'archvolgrp0'/lv_root
