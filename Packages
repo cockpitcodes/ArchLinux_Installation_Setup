@@ -93,6 +93,14 @@ grsync
 arc-gtk-theme
 arc-icon-theme
 arc-solid-gtk-theme
+
+# OBS-Studio Packages Optional
+
+obs-studio
+qt5-wayland
+qt6-wayland
+xdg-desktop-poral-wlr
+
 cryptsetup --optional for LVM Encryption
 
 ##BOOT##
